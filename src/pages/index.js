@@ -71,7 +71,7 @@ const Index = ({ history }) => {
           </div>
         </div>
         <div className="col">
-        <div className="card">
+          <div className="card">
             <form onSubmit={onFormSubmit} className="form">
               <div className="form-content">
                 <div className="form-group">
@@ -85,15 +85,15 @@ const Index = ({ history }) => {
                     onChange={handleInputChange}
                     className="form-control" />
                   {errors.fullNameErr && <p className="error">{ errors.fullNameErr }</p>}
-          </div>
+                </div>
                 <div className="form-group">
-            <KeyboardDatePicker
-              clearable
+                  <KeyboardDatePicker
+                    clearable
                     className="form-control"
                     value={date}
                     placeholder="Date ..."
                     name="date"
-              onChange={date => handleDateChange(date)}
+                    onChange={date => handleDateChange(date)}
                     format="MMM/DD/YYYY" />
                    {errors.fullNameErr && <p className="error">{ errors.fullNameErr }</p>}
                 </div>
@@ -107,7 +107,7 @@ const Index = ({ history }) => {
                         className="custom-select__trigger">
                         <span>{theme ? theme : 'Pick a theme'}</span>
                         <div className="arrow"/>
-          </div>
+                      </div>
                       <div className="custom-options">
                         <span
                           className="custom-option selected"
@@ -136,22 +136,22 @@ const Index = ({ history }) => {
                   {errors.themeErr && <p className="error">{ errors.themeErr }</p>}
                 </div>
                 <div className="form-group">
-            <textarea
+                  <textarea
                     className="form-control"
-              name="message"
-              id="message"
-              cols="30"
+                    name="message"
+                    id="message"
+                    cols="30"
                     rows="5"
                     value={message}
-              spellCheck="true"
+                    spellCheck="true"
                     onChange={handleInputChange}
-              placeholder="Hi, I'd like to say . . . " />
+                    placeholder="Hi, I'd like to say . . . " />
                   {errors.messageErr && <p className="error">{ errors.messageErr }</p>}
-            </div>
-          </div>
+                </div>
+              </div>
               <button type="submit" className="btn btn-primary btn-lg">Submit</button>
           </form>
-          </div>
+        </div>
         </div>
       </div>
     </div>
