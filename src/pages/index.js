@@ -5,26 +5,81 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
-const Index = () => {
+const Index = ({ history }) => {
+  const [state, setState] = useState({
+    fullName: '',
+    theme: '',
+    message: ''
+  })
   const [selectedDate, handleDateChange] = useState(new Date());
+
+  //*handle the click of the custom select
+  const handleSelect = () => {
+    setSelect(!select)
+  }
+  // *Input Change event
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setState({...state, [name] : value})
+  }
+  const {
+    fullName,
+    date,
+    theme,
+    message
+  } = state
+  const handleThemeSelect = (e) => {
+    const selectedTheme = e.target.dataset.value;
+    setState({...state, theme: selectedTheme})
+  }
+    // validates the inputs before sending an action
   return (
     <div className="container">
-      <div>
+      <div className="content">
+        <div className="col">
+          <div className="info">
+            <h1>Show a message</h1>
+            <p>Hi there, kindly fill the form to generate a message with a theme of your choice.</p>
+          </div>
+        </div>
+        <div className="col">
         <div className="card">
-        <h3>Profile</h3>
-          <p>Hi there, lets set up your account to begin with</p>
-          <div>
-            <label htmlFor="fullName">Your name</label>
-          <input type="text" name="fullName" id="fullName" spellCheck="true" placeholder="Your Name" />
+            <form onSubmit={onFormSubmit} className="form">
+              <div className="form-content">
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="fullName"
+                    id="fullName"
+                    spellCheck="true"
+                    placeholder="Your Name"
+                    value={fullName}
+                    onChange={handleInputChange}
+                    className="form-control" />
           </div>
           <div>
             <label htmlFor="Date"></label>
             <KeyboardDatePicker
               clearable
-              value={selectedDate}
-              placeholder="10/10/2018"
+                    className="form-control"
+                    value={date}
+                    placeholder="Date ..."
+                    name="date"
               onChange={date => handleDateChange(date)}
-              format="MMM/DD/YYYY"/>
+                    format="MMM/DD/YYYY" />
+                   {errors.fullNameErr && <p className="error">{ errors.fullNameErr }</p>}
+                </div>
+                <div className="form-group">
+                  <div
+                    className="custom-select-wrapper"
+                    onClick={handleSelect}
+                  >
+                    <div className={`custom-select ${select ? 'open' : ''}`}>
+                      <div
+                        className="custom-select__trigger">
+                        <span>{theme ? theme : 'Pick a theme'}</span>
+                        <div className="arrow"/>
           </div>
           <div>
             <label htmlFor="message">Your Message</label>
