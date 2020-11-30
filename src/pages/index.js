@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
-import DateFnsUtils from '@date-io/dayjs';
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 
 const Index = ({ history }) => {
   const [state, setState] = useState({
@@ -12,6 +8,13 @@ const Index = ({ history }) => {
     message: ''
   })
   const [selectedDate, handleDateChange] = useState(new Date());
+  const [select, setSelect] = useState(false);
+  const [errors, setErrors] = useState({
+    fullNameErr: '',
+    themeErr: '',
+    selectedDateErr: '',
+    messageErr: ''
+  })
 
   //*handle the click of the custom select
   const handleSelect = () => {
@@ -34,6 +37,30 @@ const Index = ({ history }) => {
     setState({...state, theme: selectedTheme})
   }
     // validates the inputs before sending an action
+    const validateData = () => {
+      errors.fullNameErr = fullName ? '' : "Full name is required";
+      errors.themeErr = theme ? '' : 'Please select a theme'
+      errors.selectedDateErr = selectedDate ? '' : 'Date is required'
+      errors.messageErr = message ? '' : 'Message is required'
+      setErrors({
+        ...errors
+      })
+      return Object.values(errors).every(x => x === "")
+    }
+
+  const onFormSubmit = (e) => {
+    e.preventDefault()
+    if (validateData()) {
+      const data = {
+        ...state,
+        selectedDate
+      }
+      history.push({
+        pathname: '/summary',
+        state: data
+      })
+    }
+  }
   return (
     <div className="container">
       <div className="content">
@@ -57,9 +84,9 @@ const Index = ({ history }) => {
                     value={fullName}
                     onChange={handleInputChange}
                     className="form-control" />
+                  {errors.fullNameErr && <p className="error">{ errors.fullNameErr }</p>}
           </div>
-          <div>
-            <label htmlFor="Date"></label>
+                <div className="form-group">
             <KeyboardDatePicker
               clearable
                     className="form-control"
@@ -81,35 +108,49 @@ const Index = ({ history }) => {
                         <span>{theme ? theme : 'Pick a theme'}</span>
                         <div className="arrow"/>
           </div>
-          <div>
-            <label htmlFor="message">Your Message</label>
+                      <div className="custom-options">
+                        <span
+                          className="custom-option selected"
+                          data-value="hunter-green"
+                          onClick={handleThemeSelect}>
+                          <span className=" theme hunter-green" />
+                          Hunter Green
+                        </span>
+                        <span
+                          className="custom-option"
+                          data-value="calm-ui"
+                          onClick={handleThemeSelect}>
+                          <span className="theme calm-ui" />
+                          Calm UI
+                        </span>
+                        <span
+                          className="custom-option"
+                          data-value="morning-sun"
+                          onClick={handleThemeSelect}>
+                          <span className="theme morning-sun" />
+                          Morning Sun
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {errors.themeErr && <p className="error">{ errors.themeErr }</p>}
+                </div>
+                <div className="form-group">
             <textarea
+                    className="form-control"
               name="message"
               id="message"
               cols="30"
-              rows="10"
+                    rows="5"
+                    value={message}
               spellCheck="true"
+                    onChange={handleInputChange}
               placeholder="Hi, I'd like to say . . . " />
-          </div>
-          <div>
-            <label htmlFor="theme">Theme</label>
-            <div class="custom-select-wrapper">
-              <div class="custom-select">
-                <div class="custom-select__trigger"><span>Tesla</span>
-                  <div class="arrow"></div>
-                </div>
-                <div class="custom-options">
-                  <span
-                    class="custom-option selected"
-                    data-value="tesla">Tesla</span>
-                  <span class="custom-option" data-value="volvo">Volvo</span>
-                  <span class="custom-option" data-value="mercedes">Mercedes</span>
-                </div>
-              </div>
+                  {errors.messageErr && <p className="error">{ errors.messageErr }</p>}
             </div>
           </div>
-          <div>
-            <button type="submit">Submit</button>
+              <button type="submit" className="btn btn-primary btn-lg">Submit</button>
+          </form>
           </div>
         </div>
       </div>
